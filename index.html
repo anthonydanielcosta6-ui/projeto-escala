@@ -1,353 +1,483 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Escala de Nomes</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      font-family:Arial, sans-serif;
+<title>Escala Inteligente</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    background:
+    linear-gradient(135deg,#0f172a,#1e293b,#111827);
+    min-height:100vh;
+    color:white;
+    padding:30px;
+}
+
+.container{
+    width:100%;
+    max-width:1200px;
+    margin:auto;
+}
+
+.topo{
+    margin-bottom:30px;
+}
+
+.topo h1{
+    font-size:42px;
+    font-weight:700;
+}
+
+.topo p{
+    color:#cbd5e1;
+    margin-top:8px;
+}
+
+.card{
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.08);
+    backdrop-filter:blur(12px);
+    border-radius:24px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 10px 40px rgba(0,0,0,0.35);
+}
+
+.form-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:15px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.input-group label{
+    font-size:14px;
+    color:#cbd5e1;
+}
+
+input{
+    height:52px;
+    border:none;
+    outline:none;
+    border-radius:14px;
+    padding:0 15px;
+    background:#0f172a;
+    color:white;
+    font-size:15px;
+    border:1px solid #334155;
+    transition:0.2s;
+}
+
+input:focus{
+    border-color:#3b82f6;
+    box-shadow:0 0 0 4px rgba(59,130,246,0.2);
+}
+
+.buttons{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-top:20px;
+}
+
+button{
+    border:none;
+    border-radius:14px;
+    padding:14px 20px;
+    cursor:pointer;
+    color:white;
+    font-weight:600;
+    transition:0.2s;
+}
+
+.btn-save{
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+}
+
+.btn-save:hover{
+    transform:translateY(-2px);
+}
+
+.btn-cancel{
+    background:#475569;
+}
+
+.btn-cancel:hover{
+    transform:translateY(-2px);
+}
+
+.table-container{
+    overflow:auto;
+    border-radius:18px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:700px;
+}
+
+thead{
+    background:#1e293b;
+}
+
+th{
+    padding:18px;
+    text-align:left;
+    font-size:14px;
+    color:#e2e8f0;
+}
+
+td{
+    padding:18px;
+    border-top:1px solid rgba(255,255,255,0.06);
+}
+
+tbody tr:nth-child(even){
+    background:rgba(255,255,255,0.03);
+}
+
+tbody tr:hover{
+    background:rgba(59,130,246,0.08);
+}
+
+.action-buttons{
+    display:flex;
+    gap:10px;
+}
+
+.btn-edit{
+    background:#f59e0b;
+}
+
+.btn-delete{
+    background:#ef4444;
+}
+
+.status{
+    margin-top:18px;
+    color:#cbd5e1;
+    font-size:14px;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:999px;
+    background:#1d4ed8;
+    font-size:12px;
+}
+
+@media(max-width:700px){
+
+    .topo h1{
+        font-size:30px;
     }
 
     body{
-      background:#0f172a;
-      color:white;
-      min-height:100vh;
-      padding:30px;
-      display:flex;
-      justify-content:center;
+        padding:15px;
     }
 
-    .container{
-      width:100%;
-      max-width:900px;
-    }
+}
 
-    h1{
-      text-align:center;
-      margin-bottom:25px;
-      font-size:34px;
-    }
-
-    .card{
-      background:#1e293b;
-      padding:20px;
-      border-radius:16px;
-      margin-bottom:20px;
-      box-shadow:0 0 15px rgba(0,0,0,0.3);
-    }
-
-    .form{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    input{
-      flex:1;
-      min-width:200px;
-      padding:14px;
-      border:none;
-      border-radius:10px;
-      outline:none;
-      font-size:16px;
-    }
-
-    button{
-      padding:14px 18px;
-      border:none;
-      border-radius:10px;
-      cursor:pointer;
-      font-weight:bold;
-      transition:0.2s;
-    }
-
-    .btn-add{
-      background:#22c55e;
-      color:white;
-    }
-
-    .btn-add:hover{
-      background:#16a34a;
-    }
-
-    .btn-update{
-      background:#3b82f6;
-      color:white;
-    }
-
-    .btn-delete{
-      background:#ef4444;
-      color:white;
-    }
-
-    .btn-cancel{
-      background:#64748b;
-      color:white;
-    }
-
-    table{
-      width:100%;
-      border-collapse:collapse;
-      overflow:hidden;
-      border-radius:14px;
-    }
-
-    th{
-      background:#334155;
-      padding:15px;
-      text-align:left;
-    }
-
-    td{
-      padding:14px;
-    }
-
-    tr:nth-child(even){
-      background:#1e293b;
-    }
-
-    tr:nth-child(odd){
-      background:#293548;
-    }
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .status{
-      text-align:center;
-      margin-top:15px;
-      font-size:15px;
-      color:#cbd5e1;
-    }
-
-    @media(max-width:700px){
-      table{
-        font-size:14px;
-      }
-
-      button{
-        width:100%;
-      }
-
-      .actions{
-        flex-direction:column;
-      }
-    }
-  </style>
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <h1>Escala de Nomes</h1>
-
-  <div class="card">
-    <div class="form">
-      <input type="hidden" id="editIndex">
-
-      <input type="text" id="nome" placeholder="Digite o nome">
-
-      <input type="text" id="funcao" placeholder="Digite a função">
-
-      <button class="btn-add" id="salvarBtn">
-        Adicionar
-      </button>
-
-      <button class="btn-cancel" onclick="cancelarEdicao()">
-        Cancelar
-      </button>
+    <div class="topo">
+        <h1>Escala de Equipe</h1>
+        <p>
+            Sistema integrado com Google Planilhas.
+            Porque claramente a humanidade decidiu transformar planilhas em banco de dados universal.
+        </p>
     </div>
 
-    <div class="status" id="status">
-      Carregando...
+    <div class="card">
+
+        <div class="form-grid">
+
+            <div class="input-group">
+                <label>Nome</label>
+                <input type="text" id="nome" placeholder="Digite o nome">
+            </div>
+
+            <div class="input-group">
+                <label>Função</label>
+                <input type="text" id="funcao" placeholder="Digite a função">
+            </div>
+
+            <div class="input-group">
+                <label>Dia</label>
+                <input type="text" id="dia" placeholder="Ex: Domingo">
+            </div>
+
+        </div>
+
+        <div class="buttons">
+            <button class="btn-save" onclick="salvar()">
+                Salvar Escala
+            </button>
+
+            <button class="btn-cancel" onclick="cancelarEdicao()">
+                Cancelar
+            </button>
+        </div>
+
+        <div class="status" id="status">
+            Carregando dados...
+        </div>
+
     </div>
-  </div>
 
-  <div class="card">
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nome</th>
-          <th>Função</th>
-          <th>Ações</th>
-        </tr>
-      </thead>
+    <div class="card">
 
-      <tbody id="lista"></tbody>
-    </table>
-  </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+            <h2>Escalas cadastradas</h2>
+            <span class="badge" id="contador">0 registros</span>
+        </div>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Função</th>
+                        <th>Dia</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="lista"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 </div>
 
 <script>
-  // ==========================================
-  // COLE A URL DO SEU GOOGLE APPS SCRIPT AQUI
-  // ==========================================
-  const API_URL = "https://script.google.com/macros/s/AKfycbxOpt6vBLH9HoIXEmntoiZMjGmQfiFuf8AjSwKT_zq-A6PZeYSLakYwzgIsFToPiQhN/exec";
 
-  let modoEdicao = false;
+// =========================================
+// COLE A URL DO DEPLOY DO APPS SCRIPT
+// =========================================
+const API_URL = "https://script.google.com/macros/s/AKfycbyG4cxTXViL637jhm_5jLlltmWuGvIDUDjP9apRhz06s4QIkred75hh3bDfe16w9Vdm/exec";
 
-  async function carregarDados(){
+let editando = false;
+let editIndex = null;
 
-    try{
-
-      document.getElementById("status").innerText = "Carregando dados...";
-
-      const resposta = await fetch(API_URL);
-      const dados = await resposta.json();
-
-      const lista = document.getElementById("lista");
-      lista.innerHTML = "";
-
-      dados.forEach((item,index)=>{
-
-        lista.innerHTML += `
-          <tr>
-            <td>${index + 1}</td>
-            <td>${item.nome}</td>
-            <td>${item.funcao}</td>
-
-            <td>
-              <div class="actions">
-                <button class="btn-update"
-                  onclick='editar(${index},"${item.nome}","${item.funcao}")'>
-                  Editar
-                </button>
-
-                <button class="btn-delete"
-                  onclick="deletar(${index})">
-                  Excluir
-                </button>
-              </div>
-            </td>
-          </tr>
-        `;
-      });
-
-      document.getElementById("status").innerText =
-        `${dados.length} nomes carregados`;
-
-    }catch(erro){
-
-      document.getElementById("status").innerText =
-        "Erro ao carregar dados";
-
-      console.error(erro);
-    }
-  }
-
-  document.getElementById("salvarBtn")
-    .addEventListener("click", salvar);
-
-  async function salvar(){
-
-    const nome = document.getElementById("nome").value.trim();
-    const funcao = document.getElementById("funcao").value.trim();
-    const editIndex = document.getElementById("editIndex").value;
-
-    if(!nome || !funcao){
-      alert("Preencha todos os campos");
-      return;
-    }
+async function carregarDados(){
 
     try{
 
-      if(modoEdicao){
+        document.getElementById("status").innerText =
+        "Sincronizando com Google Planilhas...";
 
-        await fetch(API_URL,{
-          method:"POST",
-          body:JSON.stringify({
-            action:"update",
-            index:editIndex,
-            nome,
-            funcao
-          })
+        const resposta = await fetch(API_URL);
+
+        const dados = await resposta.json();
+
+        const lista = document.getElementById("lista");
+
+        lista.innerHTML = "";
+
+        dados.forEach((item,index)=>{
+
+            lista.innerHTML += `
+                <tr>
+
+                    <td>${index + 1}</td>
+
+                    <td>${item.nome}</td>
+
+                    <td>${item.funcao}</td>
+
+                    <td>${item.dia}</td>
+
+                    <td>
+
+                        <div class="action-buttons">
+
+                            <button class="btn-edit"
+                            onclick='editar(${index},
+                            "${item.nome}",
+                            "${item.funcao}",
+                            "${item.dia}")'>
+                            Editar
+                            </button>
+
+                            <button class="btn-delete"
+                            onclick='deletar(${index})'>
+                            Excluir
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            `;
         });
 
-      }else{
+        document.getElementById("contador").innerText =
+        `${dados.length} registros`;
 
-        await fetch(API_URL,{
-          method:"POST",
-          body:JSON.stringify({
-            action:"add",
-            nome,
-            funcao
-          })
-        });
-      }
-
-      limparCampos();
-      carregarDados();
+        document.getElementById("status").innerText =
+        "Dados sincronizados com sucesso";
 
     }catch(erro){
-      alert("Erro ao salvar");
-      console.error(erro);
+
+        console.error(erro);
+
+        document.getElementById("status").innerText =
+        "Erro de conexão com a API";
+
     }
-  }
 
-  function editar(index,nome,funcao){
+}
 
-    modoEdicao = true;
+async function salvar(){
+
+    const nome =
+    document.getElementById("nome").value.trim();
+
+    const funcao =
+    document.getElementById("funcao").value.trim();
+
+    const dia =
+    document.getElementById("dia").value.trim();
+
+    if(!nome || !funcao || !dia){
+
+        alert("Preencha todos os campos");
+        return;
+    }
+
+    try{
+
+        let payload = {};
+
+        if(editando){
+
+            payload = {
+                action:"update",
+                index:editIndex,
+                nome,
+                funcao,
+                dia
+            };
+
+        }else{
+
+            payload = {
+                action:"add",
+                nome,
+                funcao,
+                dia
+            };
+        }
+
+        await fetch(API_URL,{
+            method:"POST",
+            body:JSON.stringify(payload)
+        });
+
+        limparCampos();
+
+        carregarDados();
+
+    }catch(erro){
+
+        console.error(erro);
+
+        alert("Erro ao salvar");
+
+    }
+
+}
+
+function editar(index,nome,funcao,dia){
+
+    editando = true;
+
+    editIndex = index;
 
     document.getElementById("nome").value = nome;
     document.getElementById("funcao").value = funcao;
-    document.getElementById("editIndex").value = index;
+    document.getElementById("dia").value = dia;
 
-    document.getElementById("salvarBtn")
-      .innerText = "Atualizar";
-  }
+}
 
-  function cancelarEdicao(){
-    limparCampos();
-  }
+async function deletar(index){
 
-  function limparCampos(){
-
-    modoEdicao = false;
-
-    document.getElementById("nome").value = "";
-    document.getElementById("funcao").value = "";
-    document.getElementById("editIndex").value = "";
-
-    document.getElementById("salvarBtn")
-      .innerText = "Adicionar";
-  }
-
-  async function deletar(index){
-
-    if(!confirm("Deseja excluir este nome?")){
-      return;
+    if(!confirm("Excluir este registro?")){
+        return;
     }
 
     try{
 
-      await fetch(API_URL,{
-        method:"POST",
-        body:JSON.stringify({
-          action:"delete",
-          index:index
-        })
-      });
+        await fetch(API_URL,{
+            method:"POST",
+            body:JSON.stringify({
+                action:"delete",
+                index:index
+            })
+        });
 
-      carregarDados();
+        carregarDados();
 
     }catch(erro){
 
-      alert("Erro ao excluir");
-      console.error(erro);
-    }
-  }
+        console.error(erro);
 
-  carregarDados();
+        alert("Erro ao excluir");
+
+    }
+
+}
+
+function cancelarEdicao(){
+    limparCampos();
+}
+
+function limparCampos(){
+
+    editando = false;
+    editIndex = null;
+
+    document.getElementById("nome").value = "";
+    document.getElementById("funcao").value = "";
+    document.getElementById("dia").value = "";
+
+}
+
+carregarDados();
+
 </script>
 
 </body>
