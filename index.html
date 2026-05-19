@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Escala de Nomes</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#0f172a;
+      color:white;
+      min-height:100vh;
+      padding:30px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:900px;
+    }
+
+    h1{
+      text-align:center;
+      margin-bottom:25px;
+      font-size:34px;
+    }
+
+    .card{
+      background:#1e293b;
+      padding:20px;
+      border-radius:16px;
+      margin-bottom:20px;
+      box-shadow:0 0 15px rgba(0,0,0,0.3);
+    }
+
+    .form{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    input{
+      flex:1;
+      min-width:200px;
+      padding:14px;
+      border:none;
+      border-radius:10px;
+      outline:none;
+      font-size:16px;
+    }
+
+    button{
+      padding:14px 18px;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.2s;
+    }
+
+    .btn-add{
+      background:#22c55e;
+      color:white;
+    }
+
+    .btn-add:hover{
+      background:#16a34a;
+    }
+
+    .btn-update{
+      background:#3b82f6;
+      color:white;
+    }
+
+    .btn-delete{
+      background:#ef4444;
+      color:white;
+    }
+
+    .btn-cancel{
+      background:#64748b;
+      color:white;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      overflow:hidden;
+      border-radius:14px;
+    }
+
+    th{
+      background:#334155;
+      padding:15px;
+      text-align:left;
+    }
+
+    td{
+      padding:14px;
+    }
+
+    tr:nth-child(even){
+      background:#1e293b;
+    }
+
+    tr:nth-child(odd){
+      background:#293548;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .status{
+      text-align:center;
+      margin-top:15px;
+      font-size:15px;
+      color:#cbd5e1;
+    }
+
+    @media(max-width:700px){
+      table{
+        font-size:14px;
+      }
+
+      button{
+        width:100%;
+      }
+
+      .actions{
+        flex-direction:column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>Escala de Nomes</h1>
+
+  <div class="card">
+    <div class="form">
+      <input type="hidden" id="editIndex">
+
+      <input type="text" id="nome" placeholder="Digite o nome">
+
+      <input type="text" id="funcao" placeholder="Digite a função">
+
+      <button class="btn-add" id="salvarBtn">
+        Adicionar
+      </button>
+
+      <button class="btn-cancel" onclick="cancelarEdicao()">
+        Cancelar
+      </button>
+    </div>
+
+    <div class="status" id="status">
+      Carregando...
+    </div>
+  </div>
+
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nome</th>
+          <th>Função</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+
+      <tbody id="lista"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<script>
+  // ==========================================
+  // COLE A URL DO SEU GOOGLE APPS SCRIPT AQUI
+  // ==========================================
+  const API_URL = "https://script.google.com/macros/s/AKfycbxOpt6vBLH9HoIXEmntoiZMjGmQfiFuf8AjSwKT_zq-A6PZeYSLakYwzgIsFToPiQhN/exec";
+
+  let modoEdicao = false;
+
+  async function carregarDados(){
+
+    try{
+
+      document.getElementById("status").innerText = "Carregando dados...";
+
+      const resposta = await fetch(API_URL);
+      const dados = await resposta.json();
+
+      const lista = document.getElementById("lista");
+      lista.innerHTML = "";
+
+      dados.forEach((item,index)=>{
+
+        lista.innerHTML += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.nome}</td>
+            <td>${item.funcao}</td>
+
+            <td>
+              <div class="actions">
+                <button class="btn-update"
+                  onclick='editar(${index},"${item.nome}","${item.funcao}")'>
+                  Editar
+                </button>
+
+                <button class="btn-delete"
+                  onclick="deletar(${index})">
+                  Excluir
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      document.getElementById("status").innerText =
+        `${dados.length} nomes carregados`;
+
+    }catch(erro){
+
+      document.getElementById("status").innerText =
+        "Erro ao carregar dados";
+
+      console.error(erro);
+    }
+  }
+
+  document.getElementById("salvarBtn")
+    .addEventListener("click", salvar);
+
+  async function salvar(){
+
+    const nome = document.getElementById("nome").value.trim();
+    const funcao = document.getElementById("funcao").value.trim();
+    const editIndex = document.getElementById("editIndex").value;
+
+    if(!nome || !funcao){
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    try{
+
+      if(modoEdicao){
+
+        await fetch(API_URL,{
+          method:"POST",
+          body:JSON.stringify({
+            action:"update",
+            index:editIndex,
+            nome,
+            funcao
+          })
+        });
+
+      }else{
+
+        await fetch(API_URL,{
+          method:"POST",
+          body:JSON.stringify({
+            action:"add",
+            nome,
+            funcao
+          })
+        });
+      }
+
+      limparCampos();
+      carregarDados();
+
+    }catch(erro){
+      alert("Erro ao salvar");
+      console.error(erro);
+    }
+  }
+
+  function editar(index,nome,funcao){
+
+    modoEdicao = true;
+
+    document.getElementById("nome").value = nome;
+    document.getElementById("funcao").value = funcao;
+    document.getElementById("editIndex").value = index;
+
+    document.getElementById("salvarBtn")
+      .innerText = "Atualizar";
+  }
+
+  function cancelarEdicao(){
+    limparCampos();
+  }
+
+  function limparCampos(){
+
+    modoEdicao = false;
+
+    document.getElementById("nome").value = "";
+    document.getElementById("funcao").value = "";
+    document.getElementById("editIndex").value = "";
+
+    document.getElementById("salvarBtn")
+      .innerText = "Adicionar";
+  }
+
+  async function deletar(index){
+
+    if(!confirm("Deseja excluir este nome?")){
+      return;
+    }
+
+    try{
+
+      await fetch(API_URL,{
+        method:"POST",
+        body:JSON.stringify({
+          action:"delete",
+          index:index
+        })
+      });
+
+      carregarDados();
+
+    }catch(erro){
+
+      alert("Erro ao excluir");
+      console.error(erro);
+    }
+  }
+
+  carregarDados();
+</script>
+
+</body>
+</html>
