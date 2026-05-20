@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Escala Sonoplastia </title>
+<title>Escala Inteligente</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
@@ -21,8 +23,8 @@
 body{
     background:
     linear-gradient(135deg,#020617,#0f172a,#111827);
-    min-height:100vh;
     color:white;
+    min-height:100vh;
     padding:25px;
 }
 
@@ -57,8 +59,8 @@ body{
 
 .form-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:15px;
+    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+    gap:16px;
 }
 
 .input-group{
@@ -72,12 +74,12 @@ body{
     font-size:14px;
 }
 
-input, select{
-    height:54px;
+input,select{
+    height:55px;
     border:none;
     outline:none;
     border-radius:14px;
-    padding:0 15px;
+    padding:0 16px;
     background:#0f172a;
     color:white;
     border:1px solid #334155;
@@ -94,16 +96,16 @@ select:focus{
     display:flex;
     gap:12px;
     flex-wrap:wrap;
-    margin-top:20px;
+    margin-top:22px;
 }
 
 button{
     border:none;
     border-radius:14px;
-    padding:14px 20px;
+    padding:14px 22px;
     color:white;
-    cursor:pointer;
     font-weight:600;
+    cursor:pointer;
     transition:0.2s;
 }
 
@@ -128,24 +130,24 @@ button:hover{
 }
 
 .status{
-    margin-top:15px;
+    margin-top:18px;
     color:#cbd5e1;
 }
 
-.dias-container{
+.datas-container{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:18px;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
 }
 
-.dia-card{
+.data-card{
     background:#0f172a;
-    border:1px solid rgba(255,255,255,0.08);
     border-radius:20px;
     overflow:hidden;
+    border:1px solid rgba(255,255,255,0.08);
 }
 
-.dia-header{
+.data-header{
     background:linear-gradient(135deg,#1d4ed8,#2563eb);
     padding:18px;
     cursor:pointer;
@@ -155,7 +157,7 @@ button:hover{
     font-weight:600;
 }
 
-.dia-content{
+.data-content{
     display:none;
     padding:18px;
 }
@@ -179,6 +181,7 @@ button:hover{
 .funcao{
     color:#93c5fd;
     font-size:14px;
+    margin-top:4px;
 }
 
 .actions{
@@ -192,27 +195,28 @@ button:hover{
     padding:10px;
 }
 
-.rotate{
-    transform:rotate(180deg);
-}
-
 .seta{
     transition:0.2s;
 }
 
-@media(max-width:700px){
+.rotate{
+    transform:rotate(180deg);
+}
 
-    .header h1{
-        font-size:30px;
-    }
+@media(max-width:700px){
 
     body{
         padding:15px;
     }
 
+    .header h1{
+        font-size:30px;
+    }
+
 }
 
 </style>
+
 </head>
 
 <body>
@@ -220,12 +224,14 @@ button:hover{
 <div class="container">
 
     <div class="header">
-        <h1>Escala Sonoplastia</h1>
+
+        <h1>Escala Inteligente</h1>
 
         <p>
             Sistema conectado ao Google Planilhas.
-            Uma prova viva de que planilhas viraram religião corporativa.
+            Porque claramente a humanidade decidiu transformar planilha em banco de dados oficial da civilização.
         </p>
+
     </div>
 
     <div class="card">
@@ -233,49 +239,56 @@ button:hover{
         <div class="form-grid">
 
             <div class="input-group">
+
                 <label>Nome</label>
-                <input type="text" id="nome" placeholder="Digite o nome">
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Digite o nome"
+                >
+
             </div>
 
-<div class="input-group">
-    <label>Função</label>
+            <div class="input-group">
 
-    <select id="funcao">
+                <label>Função</label>
 
-        <option value="">
-            Selecione a função
-        </option>
+                <select id="funcao">
 
-        <option value="Mesa">
-            Mesa
-        </option>
+                    <option value="">
+                        Selecione
+                    </option>
 
-        <option value="Computador">
-            Computador
-        </option>
+                    <option value="Mesa">
+                        Mesa
+                    </option>
 
-        <option value="Câmeras">
-            Câmeras
-        </option>
+                    <option value="Computador">
+                        Computador
+                    </option>
 
-        <option value="Live">
-            Live
-        </option>
+                    <option value="Câmeras">
+                        Câmeras
+                    </option>
 
-    </select>
+                    <option value="Live">
+                        Live
+                    </option>
 
-</div>
+                </select>
 
-<div class="input-group">
-    <label>Data</label>
+            </div>
 
-    <input 
-        type="text"
-        id="dia"
-        placeholder="Ex: Domingo 25/05"
-    >
+            <div class="input-group">
 
-</div>
+                <label>Data / Dia</label>
+
+                <input
+                    type="text"
+                    id="dia"
+                    placeholder="Ex: Domingo 25/05"
+                >
 
             </div>
 
@@ -283,42 +296,45 @@ button:hover{
 
         <div class="buttons">
 
-            <button class="btn-save" onclick="salvar()">
+            <button
+                class="btn-save"
+                onclick="salvar()"
+            >
                 Salvar Escala
             </button>
 
-            <button class="btn-cancel" onclick="cancelarEdicao()">
+            <button
+                class="btn-cancel"
+                onclick="cancelarEdicao()"
+            >
                 Cancelar
             </button>
 
         </div>
 
-        <div class="status" id="status">
+        <div
+            class="status"
+            id="status"
+        >
             Carregando dados...
         </div>
 
     </div>
 
-    <div class="dias-container" id="diasContainer"></div>
+    <div
+        class="datas-container"
+        id="datasContainer"
+    ></div>
 
 </div>
 
 <script>
 
-// =========================================
-// URL DO SEU APPS SCRIPT
-// =========================================
-const API_URL = "https://script.google.com/macros/s/AKfycbxhBTmt_PHkEsznTK8w-Rq1dg9pRKdI-pR9PgUC-AYI-rL8xNGM-9xb9YTqBzk2lXzD/exec";
-
-const diasSemana = [
-    "Domingo",
-    "Segunda-feira",
-    "Terça-feira",
-    "Quarta-feira",
-    "Quinta-feira",
-    "Sexta-feira",
-    "Sábado"
-];
+// =====================================
+// COLE A URL DO SEU DEPLOY AQUI
+// =====================================
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwMIRAcpgqJrdBfFX_HT7AYkMVm3VdYWig8552dj6yUE8BIMzYuYwX0eEkSl5kS3Vhn/exec";
 
 let editando = false;
 let editIndex = null;
@@ -327,107 +343,136 @@ async function carregarDados(){
 
     try{
 
-        const resposta = await fetch(API_URL);
+        const resposta =
+        await fetch(API_URL);
 
-        const dados = await resposta.json();
+        const dados =
+        await resposta.json();
 
-        renderizarDias(dados);
+        renderizarDatas(dados);
 
-        document.getElementById("status").innerText =
+        document
+        .getElementById("status")
+        .innerText =
         `${dados.length} pessoas carregadas`;
 
     }catch(erro){
 
         console.error(erro);
 
-        document.getElementById("status").innerText =
+        document
+        .getElementById("status")
+        .innerText =
         "Erro de conexão";
 
     }
 
 }
 
-function renderizarDias(dados){
+function renderizarDatas(dados){
 
     const container =
-    document.getElementById("diasContainer");
+    document.getElementById(
+        "datasContainer"
+    );
 
     container.innerHTML = "";
 
-    diasSemana.forEach((dia,index)=>{
+    // AGRUPAR POR DATA
+    const grupos = {};
 
-        const pessoas =
-        dados.filter(item => item.dia === dia);
+    dados.forEach(item => {
+
+        if(!grupos[item.dia]){
+            grupos[item.dia] = [];
+        }
+
+        grupos[item.dia].push(item);
+
+    });
+
+    const datas =
+    Object.keys(grupos);
+
+    datas.forEach((data,index)=>{
 
         let htmlPessoas = "";
 
-        if(pessoas.length === 0){
+        grupos[data].forEach((pessoa)=>{
 
-            htmlPessoas =
-            `<div class="vazio">
-                Nenhuma pessoa cadastrada
-            </div>`;
+            htmlPessoas += `
 
-        }else{
+                <div class="pessoa">
 
-            pessoas.forEach((pessoa)=>{
+                    <div>
 
-                htmlPessoas += `
-                    <div class="pessoa">
-
-                        <div>
-                            <div class="nome">
-                                ${pessoa.nome}
-                            </div>
-
-                            <div class="funcao">
-                                ${pessoa.funcao}
-                            </div>
+                        <div class="nome">
+                            ${pessoa.nome}
                         </div>
 
-                        <div class="actions">
+                        <div class="funcao">
+                            ${pessoa.funcao}
+                        </div>
 
-                            <button class="btn-edit"
+                    </div>
+
+                    <div class="actions">
+
+                        <button
+                            class="btn-edit"
+
                             onclick='editar(
                                 ${pessoa.index},
                                 "${pessoa.nome}",
                                 "${pessoa.funcao}",
                                 "${pessoa.dia}"
-                            )'>
-                                Editar
-                            </button>
+                            )'
+                        >
+                            Editar
+                        </button>
 
-                            <button class="btn-delete"
-                            onclick='deletar(${pessoa.index})'>
-                                Excluir
-                            </button>
+                        <button
+                            class="btn-delete"
 
-                        </div>
+                            onclick='deletar(
+                                ${pessoa.index}
+                            )'
+                        >
+                            Excluir
+                        </button>
 
                     </div>
-                `;
-            });
 
-        }
+                </div>
+
+            `;
+        });
 
         container.innerHTML += `
 
-            <div class="dia-card">
+            <div class="data-card">
 
-                <div class="dia-header"
-                onclick="toggleDia(${index})">
+                <div
+                    class="data-header"
 
-                    <span>${dia}</span>
+                    onclick="toggleData(${index})"
+                >
 
-                    <span class="seta"
-                    id="seta-${index}">
+                    <span>${data}</span>
+
+                    <span
+                        class="seta"
+                        id="seta-${index}"
+                    >
                         ▼
                     </span>
 
                 </div>
 
-                <div class="dia-content"
-                id="content-${index}">
+                <div
+                    class="data-content"
+                    id="content-${index}"
+                >
 
                     ${htmlPessoas}
 
@@ -440,13 +485,17 @@ function renderizarDias(dados){
 
 }
 
-function toggleDia(index){
+function toggleData(index){
 
     const content =
-    document.getElementById(`content-${index}`);
+    document.getElementById(
+        `content-${index}`
+    );
 
     const seta =
-    document.getElementById(`seta-${index}`);
+    document.getElementById(
+        `seta-${index}`
+    );
 
     if(content.style.display === "block"){
 
@@ -467,17 +516,28 @@ function toggleDia(index){
 async function salvar(){
 
     const nome =
-    document.getElementById("nome").value.trim();
+    document
+    .getElementById("nome")
+    .value
+    .trim();
 
     const funcao =
-    document.getElementById("funcao").value.trim();
+    document
+    .getElementById("funcao")
+    .value;
 
     const dia =
-    document.getElementById("dia").value;
+    document
+    .getElementById("dia")
+    .value
+    .trim();
 
     if(!nome || !funcao || !dia){
 
-        alert("Preencha todos os campos");
+        alert(
+            "Preencha todos os campos"
+        );
+
         return;
     }
 
@@ -488,26 +548,39 @@ async function salvar(){
         if(editando){
 
             payload = {
+
                 action:"update",
+
                 index:editIndex,
+
                 nome,
                 funcao,
                 dia
+
             };
 
         }else{
 
             payload = {
+
                 action:"add",
+
                 nome,
                 funcao,
                 dia
+
             };
+
         }
 
         await fetch(API_URL,{
+
             method:"POST",
-            body:JSON.stringify(payload)
+
+            body:JSON.stringify(
+                payload
+            )
+
         });
 
         limparCampos();
@@ -518,43 +591,68 @@ async function salvar(){
 
         console.error(erro);
 
-        alert("Erro ao salvar");
+        alert(
+            "Erro ao salvar"
+        );
 
     }
 
 }
 
-function editar(index,nome,funcao,dia){
+function editar(
+    index,
+    nome,
+    funcao,
+    dia
+){
 
     editando = true;
 
     editIndex = index;
 
-    document.getElementById("nome").value = nome;
-    document.getElementById("funcao").value = funcao;
-    document.getElementById("dia").value = dia;
+    document
+    .getElementById("nome")
+    .value = nome;
+
+    document
+    .getElementById("funcao")
+    .value = funcao;
+
+    document
+    .getElementById("dia")
+    .value = dia;
 
     window.scrollTo({
+
         top:0,
         behavior:"smooth"
+
     });
 
 }
 
 async function deletar(index){
 
-    if(!confirm("Deseja excluir?")){
+    if(!confirm(
+        "Deseja excluir?"
+    )){
         return;
     }
 
     try{
 
         await fetch(API_URL,{
+
             method:"POST",
+
             body:JSON.stringify({
+
                 action:"delete",
+
                 index:index
+
             })
+
         });
 
         carregarDados();
@@ -563,24 +661,37 @@ async function deletar(index){
 
         console.error(erro);
 
-        alert("Erro ao excluir");
+        alert(
+            "Erro ao excluir"
+        );
 
     }
 
 }
 
 function cancelarEdicao(){
+
     limparCampos();
+
 }
 
 function limparCampos(){
 
     editando = false;
+
     editIndex = null;
 
-    document.getElementById("nome").value = "";
-    document.getElementById("funcao").value = "";
-    document.getElementById("dia").value = "";
+    document
+    .getElementById("nome")
+    .value = "";
+
+    document
+    .getElementById("funcao")
+    .value = "";
+
+    document
+    .getElementById("dia")
+    .value = "";
 
 }
 
