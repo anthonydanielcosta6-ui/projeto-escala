@@ -23,8 +23,8 @@
 body{
     background:
     linear-gradient(135deg,#020617,#0f172a,#111827);
-    color:white;
     min-height:100vh;
+    color:white;
     padding:25px;
 }
 
@@ -184,6 +184,12 @@ button:hover{
     margin-top:4px;
 }
 
+.data-pessoa{
+    color:#cbd5e1;
+    font-size:13px;
+    margin-top:4px;
+}
+
 .actions{
     display:flex;
     gap:8px;
@@ -229,7 +235,7 @@ button:hover{
 
         <p>
             Sistema conectado ao Google Planilhas.
-            Porque claramente a humanidade decidiu transformar planilha em banco de dados oficial da civilização.
+            Porque claramente transformar planilha em banco de dados parecia uma ótima ideia coletiva.
         </p>
 
     </div>
@@ -282,7 +288,7 @@ button:hover{
 
             <div class="input-group">
 
-                <label>Data / Dia</label>
+                <label>Dia e Data</label>
 
                 <input
                     type="text"
@@ -330,11 +336,8 @@ button:hover{
 
 <script>
 
-// =====================================
-// COLE A URL DO SEU DEPLOY AQUI
-// =====================================
 const API_URL =
-"https://script.google.com/macros/s/AKfycbyh6CmJhCBiw6oL2ma7Pu8oqqRwiSZlyQ0m4zao4cHB5pUYC0x-KNqFIoKSnCulCNtD/exec";
+"https://script.google.com/macros/s/AKfycbwbObMYWeuGeoA-B-25ScfUM-GtxIiuzCIdp3TODlQQa1pQ-PIrcInfkGB0H4W285pv/exec";
 
 let editando = false;
 let editIndex = null;
@@ -378,23 +381,23 @@ function renderizarDatas(dados){
 
     container.innerHTML = "";
 
-    // AGRUPAR POR DATA
     const grupos = {};
 
     dados.forEach(item => {
 
-        if(!grupos[item.dia]){
-            grupos[item.dia] = [];
+        const chave =
+        String(item.dia);
+
+        if(!grupos[chave]){
+            grupos[chave] = [];
         }
 
-        grupos[item.dia].push(item);
+        grupos[chave].push(item);
 
     });
 
-    const datas =
-    Object.keys(grupos);
-
-    datas.forEach((data,index)=>{
+    Object.keys(grupos).forEach(
+    (data,index)=>{
 
         let htmlPessoas = "";
 
@@ -410,19 +413,13 @@ function renderizarDatas(dados){
                             ${pessoa.nome}
                         </div>
 
-<div class="funcao">
-    ${pessoa.funcao}
-</div>
+                        <div class="funcao">
+                            ${pessoa.funcao}
+                        </div>
 
-<div
-    style="
-    margin-top:4px;
-    font-size:13px;
-    color:#cbd5e1;
-    "
->
-    ${pessoa.dia}
-</div>
+                        <div class="data-pessoa">
+                            ${pessoa.dia}
+                        </div>
 
                     </div>
 
@@ -468,7 +465,9 @@ function renderizarDatas(dados){
                     onclick="toggleData(${index})"
                 >
 
-                    <span>${data}</span>
+                    <span>
+                        ${data}
+                    </span>
 
                     <span
                         class="seta"
