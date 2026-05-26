@@ -23,8 +23,8 @@ font-family:'Poppins',sans-serif;
 body{
 background:linear-gradient(135deg,#020617,#0f172a,#111827);
 min-height:100vh;
-color:white;
 padding:25px;
+color:white;
 }
 
 .container{
@@ -83,6 +83,13 @@ border:1px solid #334155;
 font-size:15px;
 }
 
+.buttons{
+display:flex;
+gap:12px;
+margin-top:20px;
+flex-wrap:wrap;
+}
+
 button{
 border:none;
 border-radius:14px;
@@ -90,13 +97,6 @@ padding:14px 22px;
 color:white;
 font-weight:600;
 cursor:pointer;
-}
-
-.buttons{
-display:flex;
-gap:12px;
-margin-top:20px;
-flex-wrap:wrap;
 }
 
 .btn-save{
@@ -113,11 +113,6 @@ background:#f59e0b;
 
 .btn-delete{
 background:#ef4444;
-}
-
-.status{
-margin-top:18px;
-color:#cbd5e1;
 }
 
 .datas-container{
@@ -137,9 +132,6 @@ border:1px solid rgba(255,255,255,0.08);
 background:#2563eb;
 padding:18px;
 cursor:pointer;
-display:flex;
-justify-content:space-between;
-align-items:center;
 font-weight:600;
 }
 
@@ -194,7 +186,7 @@ gap:8px;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque claramente uma simples lista de nomes precisava evoluir para uma infraestrutura semi-corporativa ritualística.
+Porque aparentemente a humanidade decidiu que planilha é um estilo de vida.
 </p>
 
 </div>
@@ -266,13 +258,6 @@ Cancelar
 
 </div>
 
-<div
-class="status"
-id="status"
->
-Carregando...
-</div>
-
 </div>
 
 <div
@@ -285,7 +270,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbyB39kiEoaoPaoW1nVCvlK4Z2AQC1CHlj2hiF3x_3Fk114dHE0WKZPBwzOBtk0TQk3V/exec";
+"https://script.google.com/macros/s/AKfycbwcrqJnhTEgYkxQtBuQs_PzCkjadVPSp__9v7BDwBI9rJlE3-dF3l8R6_OPIOGrUKM8/exec";
 
 let editando = false;
 let editIndex = null;
@@ -308,11 +293,11 @@ await fetch(API_URL);
 const dados =
 await resposta.json();
 
-renderizarDatas(dados);
+renderizar(dados);
 
 }
 
-function renderizarDatas(dados){
+function renderizar(dados){
 
 const container =
 document.getElementById(
@@ -323,27 +308,24 @@ container.innerHTML = "";
 
 const grupos = {};
 
-dados.forEach(item => {
+dados.forEach(item=>{
 
-const chave =
-String(item.dia);
-
-if(!grupos[chave]){
-grupos[chave] = [];
+if(!grupos[item.dia]){
+grupos[item.dia] = [];
 }
 
-grupos[chave].push(item);
+grupos[item.dia].push(item);
 
 });
 
 Object.keys(grupos).forEach(
 (data,index)=>{
 
-let html = "";
+let pessoasHTML = "";
 
-grupos[data].forEach((pessoa)=>{
+grupos[data].forEach(pessoa=>{
 
-html += `
+pessoasHTML += `
 
 <div class="pessoa">
 
@@ -402,14 +384,9 @@ container.innerHTML += `
 
 <div
 class="data-header"
-
-onclick="toggleData(${index})"
+onclick="toggle(${index})"
 >
-
-<span>
 ${data}
-</span>
-
 </div>
 
 <div
@@ -417,7 +394,7 @@ class="data-content"
 id="content-${index}"
 >
 
-${html}
+${pessoasHTML}
 
 </div>
 
@@ -429,7 +406,7 @@ ${html}
 
 }
 
-function toggleData(index){
+function toggle(index){
 
 const content =
 document.getElementById(
@@ -461,12 +438,12 @@ document
 .getElementById("funcao")
 .value;
 
-const dataInput =
+const dataOriginal =
 document
 .getElementById("data")
 .value;
 
-if(!nome || !funcao || !dataInput){
+if(!nome || !funcao || !dataOriginal){
 
 alert(
 "Preencha todos os campos"
@@ -477,14 +454,16 @@ return;
 }
 
 const dataObj =
-new Date(dataInput + "T00:00:00");
+new Date(
+dataOriginal + "T12:00:00"
+);
 
 const diaSemana =
 diasSemana[
 dataObj.getDay()
 ];
 
-const diaNumero =
+const dia =
 String(
 dataObj.getDate()
 ).padStart(2,"0");
@@ -498,47 +477,35 @@ const ano =
 dataObj.getFullYear();
 
 const dataFormatada =
-`${diaSemana} ${diaNumero}/${mes}/${ano}`;
+`${diaSemana} ${dia}/${mes}/${ano}`;
 
-let payload = {};
+const payload = {
 
-if(editando){
-
-payload = {
-
-action:"update",
+action:
+editando
+? "update"
+: "add",
 
 index:editIndex,
 
-nome,
-funcao,
+nome:nome,
+
+funcao:funcao,
 
 dia:dataFormatada,
 
-dataOriginal:dataInput
+dataOriginal:dataOriginal
 
 };
-
-}else{
-
-payload = {
-
-action:"add",
-
-nome,
-funcao,
-
-dia:dataFormatada,
-
-dataOriginal:dataInput
-
-};
-
-}
 
 await fetch(API_URL,{
 
 method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
 
 body:JSON.stringify(
 payload
@@ -582,6 +549,11 @@ async function deletar(index){
 await fetch(API_URL,{
 
 method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
 
 body:JSON.stringify({
 
