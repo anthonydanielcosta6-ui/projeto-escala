@@ -83,13 +83,6 @@ border:1px solid #334155;
 font-size:15px;
 }
 
-.buttons{
-display:flex;
-gap:12px;
-margin-top:20px;
-flex-wrap:wrap;
-}
-
 button{
 border:none;
 border-radius:14px;
@@ -97,6 +90,13 @@ padding:14px 22px;
 color:white;
 font-weight:600;
 cursor:pointer;
+}
+
+.buttons{
+display:flex;
+gap:12px;
+margin-top:20px;
+flex-wrap:wrap;
 }
 
 .btn-save{
@@ -113,6 +113,11 @@ background:#f59e0b;
 
 .btn-delete{
 background:#ef4444;
+}
+
+.status{
+margin-top:18px;
+color:#cbd5e1;
 }
 
 .datas-container{
@@ -151,6 +156,7 @@ margin-bottom:12px;
 display:flex;
 justify-content:space-between;
 align-items:center;
+gap:10px;
 }
 
 .nome{
@@ -174,11 +180,6 @@ display:flex;
 gap:8px;
 }
 
-.status{
-margin-top:18px;
-color:#cbd5e1;
-}
-
 </style>
 
 </head>
@@ -193,7 +194,7 @@ color:#cbd5e1;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque aparentemente a humanidade decidiu transformar agenda de igreja em mini ERP corporativo.
+Porque claramente uma simples lista de nomes precisava evoluir para uma infraestrutura semi-corporativa ritualística.
 </p>
 
 </div>
@@ -284,7 +285,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycby61eAeq9lc65Tqw6OvyS55lN-7tsxWHE1Q3QdlADbKvaOvJQ-rorV78syFhNKnwPIM/exec";
+"https://script.google.com/macros/s/AKfycbyB39kiEoaoPaoW1nVCvlK4Z2AQC1CHlj2hiF3x_3Fk114dHE0WKZPBwzOBtk0TQk3V/exec";
 
 let editando = false;
 let editIndex = null;
@@ -298,40 +299,6 @@ const diasSemana = [
 "Sexta-feira",
 "Sábado"
 ];
-
-definirMesAtual();
-
-function definirMesAtual(){
-
-const hoje = new Date();
-
-const ano = hoje.getFullYear();
-
-const mes =
-String(
-hoje.getMonth() + 1
-).padStart(2,"0");
-
-const primeiroDia =
-`${ano}-${mes}-01`;
-
-const ultimoDia =
-new Date(
-ano,
-hoje.getMonth() + 1,
-0
-).getDate();
-
-const ultimo =
-`${ano}-${mes}-${String(ultimoDia).padStart(2,"0")}`;
-
-const input =
-document.getElementById("data");
-
-input.min = primeiroDia;
-input.max = ultimo;
-
-}
 
 async function carregarDados(){
 
