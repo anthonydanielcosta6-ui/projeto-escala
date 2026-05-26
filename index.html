@@ -131,8 +131,8 @@ border:1px solid rgba(255,255,255,0.08);
 .data-header{
 background:#2563eb;
 padding:18px;
-cursor:pointer;
 font-weight:600;
+cursor:pointer;
 }
 
 .data-content{
@@ -186,7 +186,7 @@ gap:8px;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque aparentemente a humanidade decidiu que planilha é um estilo de vida.
+Porque claramente a humanidade decidiu transformar escala em engenharia de software.
 </p>
 
 </div>
@@ -270,7 +270,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbwcrqJnhTEgYkxQtBuQs_PzCkjadVPSp__9v7BDwBI9rJlE3-dF3l8R6_OPIOGrUKM8/exec";
+"https://script.google.com/macros/s/AKfycbxSduojHFeiVaqsiMb2m6GurEtCEQxbFuyYwKSdk5B-s2uU11Vh_HOzjyzyq0T0KW42/exec";
 
 let editando = false;
 let editIndex = null;
@@ -287,6 +287,8 @@ const diasSemana = [
 
 async function carregarDados(){
 
+try{
+
 const resposta =
 await fetch(API_URL);
 
@@ -294,6 +296,12 @@ const dados =
 await resposta.json();
 
 renderizar(dados);
+
+}catch(erro){
+
+console.log(erro);
+
+}
 
 }
 
@@ -311,7 +319,9 @@ const grupos = {};
 dados.forEach(item=>{
 
 if(!grupos[item.dia]){
+
 grupos[item.dia] = [];
+
 }
 
 grupos[item.dia].push(item);
@@ -321,11 +331,11 @@ grupos[item.dia].push(item);
 Object.keys(grupos).forEach(
 (data,index)=>{
 
-let pessoasHTML = "";
+let html = "";
 
 grupos[data].forEach(pessoa=>{
 
-pessoasHTML += `
+html += `
 
 <div class="pessoa">
 
@@ -386,7 +396,9 @@ container.innerHTML += `
 class="data-header"
 onclick="toggle(${index})"
 >
+
 ${data}
+
 </div>
 
 <div
@@ -394,7 +406,7 @@ class="data-content"
 id="content-${index}"
 >
 
-${pessoasHTML}
+${html}
 
 </div>
 
@@ -408,18 +420,18 @@ ${pessoasHTML}
 
 function toggle(index){
 
-const content =
+const box =
 document.getElementById(
 `content-${index}`
 );
 
-if(content.style.display === "block"){
+if(box.style.display === "block"){
 
-content.style.display = "none";
+box.style.display = "none";
 
 }else{
 
-content.style.display = "block";
+box.style.display = "block";
 
 }
 
@@ -453,9 +465,18 @@ return;
 
 }
 
+const partes =
+dataOriginal.split("-");
+
+const ano = partes[0];
+const mes = partes[1];
+const diaNumero = partes[2];
+
 const dataObj =
 new Date(
-dataOriginal + "T12:00:00"
+ano,
+mes - 1,
+diaNumero
 );
 
 const diaSemana =
@@ -463,21 +484,8 @@ diasSemana[
 dataObj.getDay()
 ];
 
-const dia =
-String(
-dataObj.getDate()
-).padStart(2,"0");
-
-const mes =
-String(
-dataObj.getMonth() + 1
-).padStart(2,"0");
-
-const ano =
-dataObj.getFullYear();
-
 const dataFormatada =
-`${diaSemana} ${dia}/${mes}/${ano}`;
+`${diaSemana} ${diaNumero}/${mes}/${ano}`;
 
 const payload = {
 
@@ -498,14 +506,11 @@ dataOriginal:dataOriginal
 
 };
 
+try{
+
 await fetch(API_URL,{
 
 method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
 
 body:JSON.stringify(
 payload
@@ -516,6 +521,16 @@ payload
 limparCampos();
 
 carregarDados();
+
+}catch(erro){
+
+console.log(erro);
+
+alert(
+"Erro ao salvar"
+);
+
+}
 
 }
 
@@ -549,11 +564,6 @@ async function deletar(index){
 await fetch(API_URL,{
 
 method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
 
 body:JSON.stringify({
 
