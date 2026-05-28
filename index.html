@@ -186,7 +186,7 @@ gap:8px;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque claramente a humanidade decidiu transformar escala em engenharia de software.
+Porque claramente organizar nomes agora exige frontend, backend e pactos espirituais com JavaScript.
 </p>
 
 </div>
@@ -270,7 +270,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbxSduojHFeiVaqsiMb2m6GurEtCEQxbFuyYwKSdk5B-s2uU11Vh_HOzjyzyq0T0KW42/exec";
+"https://script.google.com/macros/s/AKfycbyUtd_QJ_XgjTwKco4GcHACGseOAGWLZgSiTVgNM3oInDcT_esYHbIxxdH97VgpJXw/exec";
 
 let editando = false;
 let editIndex = null;
@@ -287,8 +287,6 @@ const diasSemana = [
 
 async function carregarDados(){
 
-try{
-
 const resposta =
 await fetch(API_URL);
 
@@ -296,12 +294,6 @@ const dados =
 await resposta.json();
 
 renderizar(dados);
-
-}catch(erro){
-
-console.log(erro);
-
-}
 
 }
 
@@ -508,15 +500,26 @@ dataOriginal:dataOriginal
 
 try{
 
+const resposta =
 await fetch(API_URL,{
 
 method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
 
 body:JSON.stringify(
 payload
 )
 
 });
+
+const resultado =
+await resposta.text();
+
+console.log(resultado);
 
 limparCampos();
 
@@ -564,6 +567,11 @@ async function deletar(index){
 await fetch(API_URL,{
 
 method:"POST",
+
+headers:{
+"Content-Type":
+"application/json"
+},
 
 body:JSON.stringify({
 
