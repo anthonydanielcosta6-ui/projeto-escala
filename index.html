@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
 
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Escala Inteligente</title>
@@ -28,7 +30,7 @@ color:white;
 }
 
 .container{
-max-width:1300px;
+max-width:1200px;
 margin:auto;
 }
 
@@ -78,8 +80,8 @@ outline:none;
 border-radius:14px;
 padding:0 16px;
 background:#0f172a;
-color:white;
 border:1px solid #334155;
+color:white;
 font-size:15px;
 }
 
@@ -186,7 +188,7 @@ gap:8px;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque claramente organizar nomes agora exige frontend, backend e pactos espirituais com JavaScript.
+Porque claramente um simples “quem vai ficar na mesa domingo” precisava virar arquitetura distribuída.
 </p>
 
 </div>
@@ -270,7 +272,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbyUtd_QJ_XgjTwKco4GcHACGseOAGWLZgSiTVgNM3oInDcT_esYHbIxxdH97VgpJXw/exec";
+"https://script.google.com/macros/s/AKfycbz2GiPndN7qPcpoon2Mkl8r5MF7i9cOJ2nB1PJ4Abv7ClbOJKyIV1FR0rpKH8YtZrjP/exec";
 
 let editando = false;
 let editIndex = null;
@@ -287,6 +289,8 @@ const diasSemana = [
 
 async function carregarDados(){
 
+try{
+
 const resposta =
 await fetch(API_URL);
 
@@ -294,6 +298,12 @@ const dados =
 await resposta.json();
 
 renderizar(dados);
+
+}catch(erro){
+
+console.log(erro);
+
+}
 
 }
 
@@ -365,9 +375,7 @@ Editar
 <button
 class="btn-delete"
 
-onclick='deletar(
-${pessoa.index}
-)'
+onclick='deletar(${pessoa.index})'
 >
 Excluir
 </button>
@@ -466,9 +474,9 @@ const diaNumero = partes[2];
 
 const dataObj =
 new Date(
-ano,
-mes - 1,
-diaNumero
+Number(ano),
+Number(mes) - 1,
+Number(diaNumero)
 );
 
 const diaSemana =
@@ -500,30 +508,19 @@ dataOriginal:dataOriginal
 
 try{
 
-const resposta =
 await fetch(API_URL,{
 
 method:"POST",
 
-headers:{
-"Content-Type":
-"application/json"
-},
+body:JSON.stringify(payload),
 
-body:JSON.stringify(
-payload
-)
+mode:"cors"
 
 });
 
-const resultado =
-await resposta.text();
-
-console.log(resultado);
-
 limparCampos();
 
-carregarDados();
+await carregarDados();
 
 }catch(erro){
 
@@ -568,18 +565,15 @@ await fetch(API_URL,{
 
 method:"POST",
 
-headers:{
-"Content-Type":
-"application/json"
-},
-
 body:JSON.stringify({
 
 action:"delete",
 
 index:index
 
-})
+}),
+
+mode:"cors"
 
 });
 
@@ -618,4 +612,5 @@ carregarDados();
 </script>
 
 </body>
+
 </html>
