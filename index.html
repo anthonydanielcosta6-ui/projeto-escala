@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Escala Inteligente</title>
@@ -25,12 +23,12 @@ font-family:'Poppins',sans-serif;
 body{
 background:linear-gradient(135deg,#020617,#0f172a,#111827);
 min-height:100vh;
-padding:25px;
 color:white;
+padding:25px;
 }
 
 .container{
-max-width:1200px;
+max-width:1300px;
 margin:auto;
 }
 
@@ -80,8 +78,8 @@ outline:none;
 border-radius:14px;
 padding:0 16px;
 background:#0f172a;
-border:1px solid #334155;
 color:white;
+border:1px solid #334155;
 font-size:15px;
 }
 
@@ -133,8 +131,11 @@ border:1px solid rgba(255,255,255,0.08);
 .data-header{
 background:#2563eb;
 padding:18px;
-font-weight:600;
 cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+font-weight:600;
 }
 
 .data-content{
@@ -150,7 +151,6 @@ margin-bottom:12px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-gap:10px;
 }
 
 .nome{
@@ -174,6 +174,11 @@ display:flex;
 gap:8px;
 }
 
+.status{
+margin-top:18px;
+color:#cbd5e1;
+}
+
 </style>
 
 </head>
@@ -188,7 +193,7 @@ gap:8px;
 
 <p>
 Sistema conectado ao Google Planilhas.
-Porque claramente um simples “quem vai ficar na mesa domingo” precisava virar arquitetura distribuída.
+Porque aparentemente a humanidade decidiu transformar agenda de igreja em mini ERP corporativo.
 </p>
 
 </div>
@@ -260,6 +265,13 @@ Cancelar
 
 </div>
 
+<div
+class="status"
+id="status"
+>
+Carregando...
+</div>
+
 </div>
 
 <div
@@ -272,7 +284,7 @@ id="datasContainer"
 <script>
 
 const API_URL =
-"https://script.google.com/macros/s/AKfycbz2GiPndN7qPcpoon2Mkl8r5MF7i9cOJ2nB1PJ4Abv7ClbOJKyIV1FR0rpKH8YtZrjP/exec";
+"https://script.google.com/macros/s/AKfycbx1UrrG3hs7qZYWd-z7wjWD6XIxj7z4nwLUxSHGamTGX6-0R1LXUXZHZtiDLQBd_9HA/exec";
 
 let editando = false;
 let editIndex = null;
@@ -287,9 +299,41 @@ const diasSemana = [
 "Sábado"
 ];
 
-async function carregarDados(){
+definirMesAtual();
 
-try{
+function definirMesAtual(){
+
+const hoje = new Date();
+
+const ano = hoje.getFullYear();
+
+const mes =
+String(
+hoje.getMonth() + 1
+).padStart(2,"0");
+
+const primeiroDia =
+`${ano}-${mes}-01`;
+
+const ultimoDia =
+new Date(
+ano,
+hoje.getMonth() + 1,
+0
+).getDate();
+
+const ultimo =
+`${ano}-${mes}-${String(ultimoDia).padStart(2,"0")}`;
+
+const input =
+document.getElementById("data");
+
+input.min = primeiroDia;
+input.max = ultimo;
+
+}
+
+async function carregarDados(){
 
 const resposta =
 await fetch(API_URL);
@@ -297,17 +341,11 @@ await fetch(API_URL);
 const dados =
 await resposta.json();
 
-renderizar(dados);
-
-}catch(erro){
-
-console.log(erro);
+renderizarDatas(dados);
 
 }
 
-}
-
-function renderizar(dados){
+function renderizarDatas(dados){
 
 const container =
 document.getElementById(
@@ -318,15 +356,16 @@ container.innerHTML = "";
 
 const grupos = {};
 
-dados.forEach(item=>{
+dados.forEach(item => {
 
-if(!grupos[item.dia]){
+const chave =
+String(item.dia);
 
-grupos[item.dia] = [];
-
+if(!grupos[chave]){
+grupos[chave] = [];
 }
 
-grupos[item.dia].push(item);
+grupos[chave].push(item);
 
 });
 
@@ -335,7 +374,7 @@ Object.keys(grupos).forEach(
 
 let html = "";
 
-grupos[data].forEach(pessoa=>{
+grupos[data].forEach((pessoa)=>{
 
 html += `
 
@@ -375,7 +414,9 @@ Editar
 <button
 class="btn-delete"
 
-onclick='deletar(${pessoa.index})'
+onclick='deletar(
+${pessoa.index}
+)'
 >
 Excluir
 </button>
@@ -394,10 +435,13 @@ container.innerHTML += `
 
 <div
 class="data-header"
-onclick="toggle(${index})"
+
+onclick="toggleData(${index})"
 >
 
+<span>
 ${data}
+</span>
 
 </div>
 
@@ -418,20 +462,20 @@ ${html}
 
 }
 
-function toggle(index){
+function toggleData(index){
 
-const box =
+const content =
 document.getElementById(
 `content-${index}`
 );
 
-if(box.style.display === "block"){
+if(content.style.display === "block"){
 
-box.style.display = "none";
+content.style.display = "none";
 
 }else{
 
-box.style.display = "block";
+content.style.display = "block";
 
 }
 
@@ -450,12 +494,12 @@ document
 .getElementById("funcao")
 .value;
 
-const dataOriginal =
+const dataInput =
 document
 .getElementById("data")
 .value;
 
-if(!nome || !funcao || !dataOriginal){
+if(!nome || !funcao || !dataInput){
 
 alert(
 "Preencha todos os campos"
@@ -465,72 +509,79 @@ return;
 
 }
 
-const partes =
-dataOriginal.split("-");
-
-const ano = partes[0];
-const mes = partes[1];
-const diaNumero = partes[2];
-
 const dataObj =
-new Date(
-Number(ano),
-Number(mes) - 1,
-Number(diaNumero)
-);
+new Date(dataInput + "T00:00:00");
 
 const diaSemana =
 diasSemana[
 dataObj.getDay()
 ];
 
+const diaNumero =
+String(
+dataObj.getDate()
+).padStart(2,"0");
+
+const mes =
+String(
+dataObj.getMonth() + 1
+).padStart(2,"0");
+
+const ano =
+dataObj.getFullYear();
+
 const dataFormatada =
 `${diaSemana} ${diaNumero}/${mes}/${ano}`;
 
-const payload = {
+let payload = {};
 
-action:
-editando
-? "update"
-: "add",
+if(editando){
+
+payload = {
+
+action:"update",
 
 index:editIndex,
 
-nome:nome,
-
-funcao:funcao,
+nome,
+funcao,
 
 dia:dataFormatada,
 
-dataOriginal:dataOriginal
+dataOriginal:dataInput
 
 };
 
-try{
+}else{
+
+payload = {
+
+action:"add",
+
+nome,
+funcao,
+
+dia:dataFormatada,
+
+dataOriginal:dataInput
+
+};
+
+}
 
 await fetch(API_URL,{
 
 method:"POST",
 
-body:JSON.stringify(payload),
-
-mode:"cors"
+body:JSON.stringify(
+payload
+)
 
 });
 
 limparCampos();
 
-await carregarDados();
-
-}catch(erro){
-
-console.log(erro);
-
-alert(
-"Erro ao salvar"
-);
-
-}
+carregarDados();
 
 }
 
@@ -571,9 +622,7 @@ action:"delete",
 
 index:index
 
-}),
-
-mode:"cors"
+})
 
 });
 
@@ -612,5 +661,4 @@ carregarDados();
 </script>
 
 </body>
-
 </html>
